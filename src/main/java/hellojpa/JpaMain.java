@@ -42,11 +42,11 @@ public class JpaMain {
              *  select 문에서 Member는 테이블의 Member가 아닌 객체 Member이다.
              *  JPQL을 실행하면 flush가 자동호출
              */
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
+            List<User> result = em.createQuery("select m from User as m", User.class)
                     .getResultList();
 
-            for (Member member : result) {
-                System.out.println("member.name = " + member.getName());
+            for (User user : result) {
+                System.out.println("user.name = " + user.getName());
             }
 
             tx.commit();

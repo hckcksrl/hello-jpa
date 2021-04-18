@@ -55,8 +55,8 @@ public class JpaMainTwo {
              * 내부적으로 1차캐시저장소에서 변경된 객체와 스냅샷한 객체를 비교해서 자체적으로 쿼리를 만들어서
              * 쓰기지연 저장소에 저장을하고 트랜잭션 커밋을 할때 쿼리가 발생
              */
-            Member member = em.find(Member.class, 150L);
-            member.setName("222222");
+            User user = em.find(User.class, 150L);
+            user.setName("222222");
 
             /**
              * 영속성 컨텍스트를 비우지않음
