@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMainFour {
     public static void main(String[] args) {
@@ -26,24 +27,33 @@ public class JpaMainFour {
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            Member findMember2 = em.getReference(Member.class, member2.getId());
-            System.out.println("findMember2.getClass() = " + findMember2.getClass());
+            /**
+             * 실무에서는 즉시로딩을 쓰지않고 지연로딩을 써야한다.
+             * 즉시로딩을하면 JPQL에서 N+1문제가 발생한다.
+             * @ManyToOne, @OneToOne 은 기본이 즉시로딩이라서 지연로딩 설정을 해줘야한다.
+             * @OneToMany, @ManyToMany 는 기본이 지연로딩
+             */
+            List<Member> members = em.createQuery("select m from Member m", Member.class).getResultList();
 
-            em.detach(findMember2);
-
-            System.out.println("findMember2.getClass() = " + findMember2.getClass());
-
-            System.out.println("findMember.id = " + findMember2.getId());
-            System.out.println("findMember.username = " + findMember2.getUsername());
+//            Member findMember = em.find(Member.class, member.getId());
+//            Member findMember2 = em.getReference(Member.class, member2.getId());
+//            System.out.println("findMember2.getClass() = " + findMember2.getClass());
+//
+//            em.detach(findMember2);
+//
+//            System.out.println("findMember2.getClass() = " + findMember2.getClass());
+//
+//            System.out.println("findMember.id = " + findMember2.getId());
+//            System.out.println("findMember.username = " + findMember2.getUsername());
             /**
              * 프록시 객체는 처음사용할때 한번만 초기화되고 초기화할때 프록시 객체가 실제 엔티티로 바뀌는게 아니고
              * 프록시객체를 통해 실제 엔티티에 접근가능하다.
              * 이때문에 프록시객체는 타입체크시 == 이 아니라 instace of 를 사용해야 한다.
              * 영속성 컨텍스트에 찾는 엔티티가 이미 있으면 getReference를 사용해도 실제 엔티티가 반환됨
              */
+//            logic(findMember, findMember2);
 
-            logic(findMember, findMember2);
+
 
             tx.commit();
         } catch (Exception e) {
